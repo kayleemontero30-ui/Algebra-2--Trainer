@@ -2,6 +2,7 @@
 
 from datos_tema1 import TEMA1
 from datos_tema2 import TEMA2
+from datos_tema3 import TEMA3
 from datos_conexiones import CONEXIONES
 
 from funciones_estudio import (
@@ -23,7 +24,8 @@ from funciones_estudio import (
 
 TEMAS = {
     "1": TEMA1,
-    "2": TEMA2
+    "2": TEMA2,
+    "3": TEMA3
 }
 
 
@@ -34,6 +36,7 @@ def elegir_tema():
         print("=" * 80)
         print("1. Tema 1 - Formas bilineales y formas cuadraticas")
         print("2. Tema 2 - Espacios vectoriales euclideos")
+        print("3. Tema 3 - Espacios afines y afines euclideos")
 
         opcion = input("Elige tema: ").strip()
 
