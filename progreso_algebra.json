@@ -1,0 +1,35 @@
+{
+    "tests_realizados": 8,
+    "preguntas_totales": 64,
+    "preguntas_correctas": 51,
+    "fallos_por_categoria": {
+        "Diagonalizacion": 1,
+        "Clasificacion": 1,
+        "Nucleo": 1,
+        "Coeficientes de Fourier": 2,
+        "Matrices ortogonales": 1,
+        "Complemento ortogonal": 1,
+        "Espacio canonico": 1,
+        "Normas": 1,
+        "Rangos": 1,
+        "Variedades afines": 1,
+        "Cambio de referencia": 1,
+        "Espacio afin": 1
+    },
+    "preguntas_falladas": [
+        "Tema 1 - Formas bilineales y formas cuadraticas:vf:alg1_vf_11",
+        "Tema 1 - Formas bilineales y formas cuadraticas:vf:alg1_vf_10",
+        "Tema 2 - Espacios vectoriales euclideos:vf:alg2_vf_12",
+        "Tema 2 - Espacios vectoriales euclideos:vf:alg2_vf_10",
+        "Tema 2 - Espacios vectoriales euclideos:vf:alg2_vf_08",
+        "Tema 2 - Espacios vectoriales euclideos:mc:alg2_mc_09",
+        "Tema 2 - Espacios vectoriales euclideos:mc:alg2_mc_12",
+        "Tema 2 - Espacios vectoriales euclideos:mc:alg2_mc_11",
+        "Tema 3 - Espacios afines y afines euclideos:vf:alg3_vf_05",
+        "Tema 3 - Espacios afines y afines euclideos:vf:alg3_vf_06",
+        "Tema 3 - Espacios afines y afines euclideos:vf:alg3_vf_09",
+        "Tema 3 - Espacios afines y afines euclideos:vf:alg3_vf_01"
+    ],
+    "flashcards_vistas": 28,
+    "ejercicios_guiados_vistos": 0
+}
