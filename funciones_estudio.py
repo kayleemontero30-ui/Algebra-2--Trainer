@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import json
 import os
@@ -80,13 +81,7 @@ def filtrar_por_dificultad(preguntas, dificultad):
     if dificultad == "mixto":
         return preguntas
 
-    filtradas = []
-
-    for pregunta in preguntas:
-        if pregunta["dificultad"] == dificultad:
-            filtradas.append(pregunta)
-
-    return filtradas
+    return [pregunta for pregunta in preguntas if pregunta["dificultad"] == dificultad]
 
 
 def mostrar_resumen(tema):
@@ -136,6 +131,18 @@ def mostrar_metodos(tema):
             print("Errores comunes:")
             for error in metodo["errores_comunes"]:
                 print(" -", error)
+
+
+def mostrar_conexiones(conexiones):
+    print("\n" + "=" * 80)
+    print("CONEXIONES ENTRE TEMAS".center(80))
+    print("=" * 80)
+
+    for i, conexion in enumerate(conexiones, start=1):
+        print(f"\n{i}. {conexion['titulo']}")
+        print("-" * 80)
+        print(conexion["explicacion"])
+        print("Ejemplo:", conexion["ejemplo"])
 
 
 def modo_flashcards(tema, progreso):
@@ -199,7 +206,8 @@ def preparar_banco_completo(tema):
 
 
 def obtener_id_pregunta(pregunta):
-    return pregunta["tipo"] + ":" + pregunta["id"]
+    tema_nombre = pregunta.get("tema_nombre", "")
+    return tema_nombre + ":" + pregunta["tipo"] + ":" + pregunta["id"]
 
 
 def registrar_resultado(progreso, pregunta, correcto):
@@ -289,10 +297,13 @@ def preguntar_mc(pregunta):
     return correcto
 
 
-def hacer_preguntas(preguntas, progreso, titulo):
+def hacer_preguntas(preguntas, progreso, titulo, tema_nombre):
     if len(preguntas) == 0:
         print("No hay preguntas disponibles para esta opcion.")
         return
+
+    for pregunta in preguntas:
+        pregunta["tema_nombre"] = tema_nombre
 
     cantidad = pedir_numero(
         f"Cuantas preguntas quieres? Maximo {len(preguntas)}: ",
@@ -328,17 +339,21 @@ def hacer_preguntas(preguntas, progreso, titulo):
 def mini_test_vf(tema, progreso):
     dificultad = elegir_dificultad()
     preguntas = filtrar_por_dificultad(preparar_vf(tema), dificultad)
-    hacer_preguntas(preguntas, progreso, "RESULTADO TEST VERDADERO/FALSO")
+    hacer_preguntas(preguntas, progreso, "RESULTADO TEST VERDADERO/FALSO", tema["nombre"])
 
 
 def mini_test_mc(tema, progreso):
     dificultad = elegir_dificultad()
     preguntas = filtrar_por_dificultad(preparar_mc(tema), dificultad)
-    hacer_preguntas(preguntas, progreso, "RESULTADO TEST MULTIPLE CHOICE")
+    hacer_preguntas(preguntas, progreso, "RESULTADO TEST MULTIPLE CHOICE", tema["nombre"])
 
 
 def practicar_falladas(tema, progreso):
     banco = preparar_banco_completo(tema)
+
+    for pregunta in banco:
+        pregunta["tema_nombre"] = tema["nombre"]
+
     falladas = []
 
     for pregunta in banco:
@@ -348,10 +363,10 @@ def practicar_falladas(tema, progreso):
             falladas.append(pregunta)
 
     if len(falladas) == 0:
-        print("\nNo tienes preguntas falladas pendientes.")
+        print("\nNo tienes preguntas falladas pendientes para este tema.")
         return
 
-    hacer_preguntas(falladas, progreso, "RESULTADO PREGUNTAS FALLADAS")
+    hacer_preguntas(falladas, progreso, "RESULTADO PREGUNTAS FALLADAS", tema["nombre"])
 
 
 def ejercicios_guiados(tema, progreso):
@@ -413,3 +428,48 @@ def mostrar_progreso(progreso):
     else:
         for categoria, fallos in progreso["fallos_por_categoria"].items():
             print(f"- {categoria}: {fallos}")
+
+
+def interpretar_enunciados(tema):
+    if "interpretacion_enunciados" not in tema:
+        print("\nEste tema no tiene seccion de interpretacion de enunciados.")
+        return
+
+    guias = tema["interpretacion_enunciados"]
+
+    while True:
+        print("\n" + "=" * 80)
+        print("COMO INTERPRETAR ENUNCIADOS".center(80))
+        print("=" * 80)
+
+        for i, guia in enumerate(guias, start=1):
+            print(f"{i}. {guia['palabra_clave']}")
+
+        print(f"{len(guias) + 1}. Volver")
+
+        opcion = pedir_numero("Elige una palabra clave: ", 1, len(guias) + 1)
+
+        if opcion == len(guias) + 1:
+            break
+
+        guia = guias[opcion - 1]
+
+        print("\n" + "-" * 80)
+        print(guia["palabra_clave"].upper())
+        print("-" * 80)
+
+        print("\nQue significa:")
+        print(guia["que_significa"])
+
+        print("\nQue suele pedir:")
+        for item in guia["que_suele_pedir"]:
+            print(" -", item)
+
+        print("\nOperaciones recomendadas:")
+        for item in guia["operaciones_recomendadas"]:
+            print(" -", item)
+
+        print("\nPista de examen:")
+        print(guia["pista_examen"])
+
+        input("\nPulsa ENTER para continuar...")
